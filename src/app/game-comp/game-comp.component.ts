@@ -13,13 +13,14 @@ export class GameComponent implements AfterViewInit, OnInit {
   context: CanvasRenderingContext2D;
   @ViewChild('myCanvas') myCanvas;
 
-  xPos = 100;
-  yPos = 100;
-  GRAVITY = 10;
-  ACCELERATION = 2;
+  xPos = 300;
+  yPos = 300;
+  GRAVITY = -50;
+  ACCELERATION = 3;
+  FRAMETIME = 60;
   interval;
   once = true;
-
+  birdImg = new Image();
   constructor() { }
 
   ngAfterViewInit() {
@@ -29,34 +30,32 @@ export class GameComponent implements AfterViewInit, OnInit {
   }
   ngOnInit() {
     this.interval = setInterval(() => {
-      this.yPos += this.GRAVITY / this.ACCELERATION;
 
+      this.yPos += this.GRAVITY / this.ACCELERATION;
       this.clearScreen();
       this.draw(this.context, this.xPos, this.yPos);
       this.GRAVITY += 6;
-    }, 60);
+    }, this.FRAMETIME);
 
   }
   draw(ctx: CanvasRenderingContext2D, xPos, yPos) {
 
-    const img = new Image();
-    img.src = '../../assets/bird1.png';
 
-    img.onload = function () {
+    this.birdImg.src = '../../assets/bird1.png';
+    // ctx.save();
+    // ctx.rotate(Math.PI);
+    ctx.drawImage(this.birdImg, xPos, yPos, 40, 40);
+    // ctx.restore();
 
-      ctx.drawImage(img, xPos, yPos, 50, 50);
-
-    };
-
-
-    if (yPos > 600 && this.once) { console.log((this.interval)); this.once = false;; }
+    // if (yPos > 600 && this.once) { console.log((this.interval)); this.once = false; }
 
   }
   onClick() {
     this.yPos -= 20;
-    this.GRAVITY = -30;
+    this.GRAVITY = -15 * this.ACCELERATION;
     this.clearScreen();
     this.draw(this.context, this.xPos, this.yPos);
+
 
   }
   clearScreen() {
