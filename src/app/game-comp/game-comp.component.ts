@@ -15,8 +15,10 @@ export class GameComponent implements AfterViewInit, OnInit {
 
   xPos = 100;
   yPos = 100;
-  accel = 10;
-
+  GRAVITY = 10;
+  ACCELERATION = 2;
+  interval;
+  once = true;
 
   constructor() { }
 
@@ -26,13 +28,14 @@ export class GameComponent implements AfterViewInit, OnInit {
     this.draw(this.context, this.xPos, this.yPos);
   }
   ngOnInit() {
-    const interval = setInterval(() => {
-      this.yPos += this.accel / 2;
+    this.interval = setInterval(() => {
+      this.yPos += this.GRAVITY / this.ACCELERATION;
 
       this.clearScreen();
       this.draw(this.context, this.xPos, this.yPos);
-      this.accel += 6;
+      this.GRAVITY += 6;
     }, 60);
+
   }
   draw(ctx: CanvasRenderingContext2D, xPos, yPos) {
 
@@ -45,12 +48,13 @@ export class GameComponent implements AfterViewInit, OnInit {
 
     };
 
-    if (yPos > 600) { console.log('dead'); }
+
+    if (yPos > 600 && this.once) { console.log((this.interval)); this.once = false;; }
 
   }
   onClick() {
     this.yPos -= 20;
-    this.accel = -30;
+    this.GRAVITY = -30;
     this.clearScreen();
     this.draw(this.context, this.xPos, this.yPos);
 
@@ -58,7 +62,7 @@ export class GameComponent implements AfterViewInit, OnInit {
   clearScreen() {
     this.context.fillStyle = 'blue';
     this.context.clearRect(0, 0, 800, 600);
-    this.context.fillRect(0, 0, 800, 600);
+    this.context.fillRect(0, 0, 1200, 600);
   }
 
 }
