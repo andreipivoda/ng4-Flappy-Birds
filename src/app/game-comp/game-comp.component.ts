@@ -19,10 +19,7 @@ export class GameComponent implements AfterViewInit {
   }
 
   draw() {
-    const ctx = this.context;
-    ctx.clearRect(0, 0, 400, 400);
-    ctx.fillStyle = 'red';
-    ctx.fillRect(0, 0, 200, 200);
+
 
   }
 }
